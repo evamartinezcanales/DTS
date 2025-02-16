@@ -1,3 +1,6 @@
+using DataFrames
+using CairoMakie
+
 """
     trim(t, v) → (tt,tv)
 
@@ -11,6 +14,7 @@ Use example:
 ```  
 """
 
+
 function trim(t::Vector,v::Vector)#precondition both have the same length
     L = length(v);
     @assert length(t) == length(v)#fail otherwise.
@@ -23,14 +27,14 @@ end
 
 """
     create(n,v) 
-    
+
 A function to create a signal with time index n and values v
 """
 function signal(n::Vector{Int64},  v::Vector{Complex{Float64}})::DataFrame
     #include the code here to create the signal
     @assert length(n) == length(v)
     nt,vt = trim(n,v)
-    return DataFrame(;Time = nt, Value = vt)
+    return DataFrame(;Time = nt, Value = vt) #devuelve un dataframe(tabla con datos)
 end
 
 n = collect(-3:3)
@@ -52,8 +56,102 @@ function visualise!(s::DataFrame)
     stem!(s.Time,real.(s.Value))
 end
 
+x_n = signal(n,v)
+
 f1 = Figure()
 Axis(f1[1,1])
 visualise!(x_n)
 f1
 
+# 4. Define two primitives to represent a delta at the origin and a parametric complex 
+# exponential over a closed (-pi, pi) interval.
+function δ()
+    n = collect(-3:3)  # Rango de índices
+    v = zeros(ComplexF64, length(n))  # genera un vector de ceros de tipo ComplexF64 (números complejos con precisión de 64 bits)
+    v[findfirst(isequal(0), n)] = 1.0  # Asigna 1 en n=0
+    return signal(n, v) #convierte los vectores n y v en una tabla.
+end
+
+x = δ()
+f1 = Figure()
+Axis(f1[1,1])
+visualise!(x)
+f1
+
+#n: Es un vector de tiempos o índices que define los instantes en los que se evalúa la señal.
+#v: Es un vector de valores de la señal en los tiempos correspondientes a n
+
+function exp_signal(A::Real, N::Integer) #A=amplitud y N=periodo
+    n = round.(Int, collect(0.0:(2pi/N):2pi))  # Rango de índices, ponemos el round.(Int, ) para que sean enteros
+    v = A .* exp.(1im .* n)  # Valores de la señal
+    return signal(n, v)
+end
+
+y = exp_signal(1.0, 27)
+f2 = Figure()
+Axis(f2[2,1])
+visualise!(y)
+f2
+
+
+
+function complex_exponential_signal(ω::Float64)
+    n = round.(Int, collect(-π:0.1:π) ) # Valores en el intervalo (-π, π)
+    v = exp.(im * ω * n)   # e^(jωn) para cada n
+    return signal(n, v)
+end
+
+y = complex_exponential_signal(1.0)
+f2 = Figure()
+Axis(f2[2,1])
+visualise!(y)
+f2
+
+
+
+#sum of 2 signals
+function sum(s1::DataFrame, s2::DataFrame)::DataFrame #El resultado será una nueva señal con los tiempos y valores de ambas señales en un solo DataFrame
+    n = vcat(s1.Time, s2.Time)  # resultado es un vector n que contiene todos los tiempos de ambas señales 
+    v = vcat(s1.Value, s2.Value)  # Merge values
+    return signal(n, v) #la función signal(n, v), que toma los tiempos 
+end  #n y los valores v concatenados y los convierte en un DataFrame con las columnas Time y Value
+
+#s1.Time y s2.Time son los vectores de tiempo de las señales s1 y s2
+#vcat toma ambos vectores de tiempo y los concatena verticalmente(uno debajo del otro)
+#s1.Value y s2.Value son los vectores de valores de las señales s1 y s2, vacat los concatena verticalmente
+
+#delay of a signal
+function delay(s::DataFrame, d::Real)::DataFrame
+    return signal(s.Time .+ d, s.Value)
+end
+#s::DataFrame --> señal 
+#d::nº real que va a ser el desplazamiento 
+
+#dot product 
+function dot(s1::DataFrame, s2::DataFrame)::DataFrame #::DataFrame del final indica que la función devuelve un DataFrame
+    common_times = intersect(s1.Time, s2.Time)  # Find common time indices
+    v1 = [s1.Value[s1.Time .== t][1] for t in common_times]
+    v2 = [s2.Value[s2.Time .== t][1] for t in common_times]
+    return signal(common_times, v1 .* v2)
+end
+#Para cada t en common_times, buscamos el valor correspondiente en s1 y s2.
+#s1.Value[s1.Time .== t] devuelve los valores en s1 cuyo tiempo es t.
+#[1] extrae el primer valor (porque s1.Time .== t devuelve un subvector)
+
+z_1 = sum(x, y)
+f3 = Figure()
+Axis(f3[1,1])
+visualise!(z_1)
+f3
+
+z_2 = delay(x, 5)
+f4 = Figure()
+Axis(f4[1,1])
+visualise!(z_2)
+f4
+
+z_3 = dot(x,y)
+f5 = Figure()
+Axis(f5[1,1])
+visualise!(z_3)
+f5

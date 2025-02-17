@@ -155,3 +155,36 @@ f5 = Figure()
 Axis(f5[1,1])
 visualise!(z_3)
 f5
+
+
+#creamos una funcion (señal) que sea deltas con un lenght predeterminado
+function impulse(N0::Int)
+    n = collect(-N0:N0)  # Rango de índices
+    v = zeros(ComplexF64, length(n))  # crea un vector de ceros complejos de length = n
+    v[N0 + 1] = 1.0  # Asigna 1 en n=0, N0 + 1 es el indice de n=0
+    return signal(n, v)
+end
+
+# Create one period of the periodic signal x[n] 
+function periodic_signal(N0::Int)
+    δ = impulse(N0)  # δ[n]
+    δ_delayed1 = delay(δ, 4)  # δ[n - 5]
+    sum1 = sum(δ, δ_delayed1)
+    δ_delayed2 = delay(δ, 3)  
+    sum2 = sum(sum1, δ_delayed2)
+    δ_delayed3 = delay(δ, 2)  
+    sum3 = sum(sum2, δ_delayed3)
+    δ_delayed4 = delay(δ, 1)  
+    sum4 = sum(sum3, δ_delayed4)
+    return sum4
+end
+
+#la señal x[n] es 5 deltas y 5 ceros periodicamente
+
+N0 = 5
+x = periodic_signal(N0)
+
+f6 = Figure()
+Axis(f6[1,1])
+visualise!(x)
+f6

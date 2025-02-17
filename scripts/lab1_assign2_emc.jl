@@ -26,14 +26,6 @@ Use example:
 ```  
 """
 
-function trim(t::Vector,v::Vector)#precondition both have the same length
-    L = length(v);
-    @assert length(t) == length(v)#fail otherwise.
-    s = findfirst(!isequal(0.0), v)
-    e = findlast(!isequal(0.0), v)
-    return (isnothing(s) ? (Vector{Integer}(),zeros(0)) : (t[s:e], v[s:e]))
-end
-
 
 # 2. Read, understand and include in signals.jl the next function 
 # to create signals 
@@ -45,22 +37,7 @@ end
     
 A function to create a signal with time index n and values v
 """
-function signal(n::Vector{Int64},  v::Vector{Complex{Float64}}; doTrim = True)::DataFrame
-    #include the code here to create the signal
-    @assert length(n) == length(v)
-    if doTrim
-        n,v = trim(n,v)
-    end
-    return DataFrame(;Time = nt, Value = vt)
-end
 
-n = collect(-3:3)
-v = Vector{Complex{Float64}}(zeros(length(n)))
-v[4] = 1.0
-
-trim(n, v)
-
-signal(n, v)
 
 #trim(n, v; doTrim = false)
 #doTrim is wrong bc it is not the way to define a keyword in Julia
@@ -73,14 +50,6 @@ signal(n, v)
 
 Documenting string here.
 """
-function visualise!(s::DataFrame)
-    stem!(s.Time,real.(s.Value))
-end
-
-f1 = Figure()
-Axis(f1[1,1])
-visualise!(x_n)
-f1
 
 # 4. Define two primitives to represent a delta at the origin and a parametric complex 
 # exponential over a closed (-pi, pi) interval. Include these primitives into your s

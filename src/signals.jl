@@ -56,13 +56,6 @@ function visualise!(s::DataFrame)
     stem!(s.Time,real.(s.Value))
 end
 
-x_n = signal(n,v)
-
-f1 = Figure()
-Axis(f1[1,1])
-visualise!(x_n)
-f1
-
 # 4. Define two primitives to represent a delta at the origin and a parametric complex 
 # exponential over a closed (-pi, pi) interval.
 function δ()
@@ -72,11 +65,7 @@ function δ()
     return signal(n, v) #convierte los vectores n y v en una tabla.
 end
 
-x = δ()
-f1 = Figure()
-Axis(f1[1,1])
-visualise!(x)
-f1
+
 
 #n: Es un vector de tiempos o índices que define los instantes en los que se evalúa la señal.
 #v: Es un vector de valores de la señal en los tiempos correspondientes a n
@@ -87,26 +76,12 @@ function exp_signal(A::Real, N::Integer) #A=amplitud y N=periodo
     return signal(n, v)
 end
 
-y = exp_signal(1.0, 27)
-f2 = Figure()
-Axis(f2[2,1])
-visualise!(y)
-f2
-
-
 
 function complex_exponential_signal(ω::Float64)
     n = round.(Int, collect(-π:0.1:π) ) # Valores en el intervalo (-π, π)
     v = exp.(im * ω * n)   # e^(jωn) para cada n
     return signal(n, v)
 end
-
-y = complex_exponential_signal(1.0)
-f2 = Figure()
-Axis(f2[2,1])
-visualise!(y)
-f2
-
 
 
 #sum of 2 signals
@@ -138,25 +113,6 @@ end
 #s1.Value[s1.Time .== t] devuelve los valores en s1 cuyo tiempo es t.
 #[1] extrae el primer valor (porque s1.Time .== t devuelve un subvector)
 
-z_1 = sum(x, y)
-f3 = Figure()
-Axis(f3[1,1])
-visualise!(z_1)
-f3
-
-z_2 = delay(x, 5)
-f4 = Figure()
-Axis(f4[1,1])
-visualise!(z_2)
-f4
-
-z_3 = dot(x,y)
-f5 = Figure()
-Axis(f5[1,1])
-visualise!(z_3)
-f5
-
-
 #creamos una funcion (señal) que sea deltas con un lenght predeterminado
 function impulse(N0::Int)
     n = collect(-N0:N0)  # Rango de índices
@@ -181,10 +137,3 @@ end
 
 #la señal x[n] es 5 deltas y 5 ceros periodicamente
 
-N0 = 5
-x = periodic_signal(N0)
-
-f6 = Figure()
-Axis(f6[1,1])
-visualise!(x)
-f6

@@ -44,6 +44,12 @@ A function to create a signal with time index n and values v
 
 # 3. Create a function to visualise a signal, document it, test it, and store 
 # it in signals.jl.
+x_n = signal(n,v)
+
+f1 = Figure()
+Axis(f1[1,1])
+visualise!(x_n)
+f1
 
 """
     prototype
@@ -62,16 +68,62 @@ Documenting string here.
 #
 #   LO: obtained representations for the two basic signals in discrete time. 
 
+x = δ()
+f1 = Figure()
+Axis(f1[1,1])
+visualise!(x)
+f1 
+
+
+y = exp_signal(1.0, 27)
+f2 = Figure()
+Axis(f2[2,1])
+visualise!(y)
+f2 
+
+y = complex_exponential_signal(1.0)
+f2 = Figure()
+Axis(f2[2,1])
+visualise!(y)
+f2
+
+
 # 5. Using the previous representation of signals, define, primitives "sum", "scale", 
 # "delay", "dot" (multiplication) that implement the algebra of signals, and include
 # them in signals.jl
 #
 # LO: built an algebra to operate on signals.
+z_1 = sum(x, y)
+f3 = Figure()
+Axis(f3[1,1])
+visualise!(z_1)
+f3
+
+z_2 = delay(x, 5)
+f4 = Figure()
+Axis(f4[1,1])
+visualise!(z_2)
+f4
+
+z_3 = dot(x,y)
+f5 = Figure()
+Axis(f5[1,1])
+visualise!(z_3)
+f5
+
 
 # 5. Using the previously defined primitives, build the signal that is one period of the
 # periodical signal in problem 6.4 of the Signals & Systems book. 
 #
 # LO: learned how to represent signals over time.
+
+N0 = 5
+x = periodic_signal(N0)
+
+f6 = Figure()
+Axis(f6[1,1])
+visualise!(x)
+f6
 
 # The following should always appear in well-documented versions of your code: it is
 # and indication of how your environment was built. 

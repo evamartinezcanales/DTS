@@ -1,0 +1,59 @@
+---
+author: Anonymous D. Donor
+title: "Some Practical"
+date: 66/06/6066
+---
+
+To Weave this, check out [this tutorial](https://pedrohbraga.github.io/WeavingMarkdownDocuments-in-Julia/WeavingDocumentsJl.html)
+
+Essentially (the following is supposed not to be evaluated)
+```{julia; eval = false}
+using Pkg; Pkg.add.("Weave")
+using Weave
+# Output it to Markdown
+# weave(projectdir("notebooks", "skeleton.jmd"),
+#       informat="markdown",
+#       out_path = :pwd, # This outputs the document to your current working directory
+#       doctype = "pandoc")
+#
+# to HTML
+weave(projectdir("notebooks", "skeleton.jmd"),
+      informat="markdown",
+      out_path = :pwd,
+      doctype = "md2html")
+
+# to PDF
+weave(projectdir("notebooks", "skeleton.jmd"),
+      informat="markdown",
+      out_path = joinpath("", "pdf"),
+      doctype = "md2pdf")
+```
+Execute one of these
+
+# PRACTICAL XX
+
+## Building the environment
+
+```julia
+using DrWatson
+@quickactivate(@__DIR__)#This activates the notebooks directory
+#@quickactivate "labDTS24_25_<initials>"#This activates the project's directory.
+#using CSV#Is this really needed?
+using DataFrames
+dummy = 1;
+```
+
+## Exercise XXXX
+
+```julia
+s = "Hello World!"
+println(s)
+```
+
+# Environment
+
+This is a summary of the environment for reproducibility purposes.
+
+```julia
+using Pkg;Pkg.status()
+```

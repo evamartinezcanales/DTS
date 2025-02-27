@@ -2,7 +2,7 @@
 
 julia_version = "1.11.3"
 manifest_format = "2.0"
-project_hash = "270106fd2544a80b63c118b83d7902279a1c2c6a"
+project_hash = "860607ba65daa126acd280d3957c15e65f5b02e0"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -1193,6 +1193,12 @@ deps = ["Dates", "Grisu"]
 git-tree-sha1 = "91eddf657aca81df9ae6ceb20b959ae5653ad1de"
 uuid = "992d4aef-0814-514b-bc4d-f2e9a6c4116f"
 version = "1.0.3"
+
+[[deps.Signals]]
+deps = ["DataStructures", "Distributed"]
+git-tree-sha1 = "569556d349015ef22131b7e0e8867d18ee77b679"
+uuid = "6303bc30-01ab-52eb-8b10-60e47555a8d1"
+version = "1.2.0"
 
 [[deps.SignedDistanceFields]]
 deps = ["Random", "Statistics", "Test"]

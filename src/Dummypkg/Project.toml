@@ -1,0 +1,4 @@
+name = "Dummypkg"
+uuid = "01a9a2b7-d11e-44d7-990b-2d07091d2db6"
+authors = ["evamartinezcanales <e.martinezc.2023@alumnos.urjc.es>"]
+version = "0.1.0"

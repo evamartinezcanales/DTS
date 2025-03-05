@@ -259,3 +259,20 @@ function *(x::Signal, y::Signal)::Complex
     return reduce(+, conj(x.Value[common]) .* y.Value[common]; init=0+0im)
 end
  =#
+
+ function convolve(x::Signal, h::Signal)::Signal
+    @assert issignal(x) && issignal(h)
+    lx = length(x.Value)
+    lh = length(h.Value)
+    if lx == 0 || lh == 0
+        return Signal(Time = [], Value = [])
+    end
+    ly = lx + lh - 1
+    n = (x.Time[1] + h.Time[1]) .+ collect(0:(ly-1))
+    matrix = zeros(Float64, ly, lx) # matriz con ly filas y lx columnas
+    for j in 1:lx
+        matrix[(j-1) .+ (1:lh), j] = h.Value
+    end
+
+    return Signal(n, matrix * x.Value)
+end

@@ -2,7 +2,7 @@
 
 julia_version = "1.11.3"
 manifest_format = "2.0"
-project_hash = "37ea5d2515adc573ef8c5bdd5e00c2822b420a3c"
+project_hash = "d9b400cf381a6577bc24a1ce4fe986d05ef3280f"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -215,12 +215,6 @@ weakdeps = ["OffsetArrays"]
 
     [deps.DSP.extensions]
     OffsetArraysExt = "OffsetArrays"
-
-[[deps.DTSSignals]]
-deps = ["CairoMakie", "DSP", "DataFrames", "Reexport"]
-path = "src/DTSSignals"
-uuid = "ffd6acfe-cf79-472d-9fe0-516ab33e97a0"
-version = "0.2.0"
 
 [[deps.DataAPI]]
 git-tree-sha1 = "abe83f3a2f1b857aac70ef8b269080af17764bbe"
